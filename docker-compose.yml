@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  project-reactor-container:
+    image: project-reactor-docker-compose:1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/project-reactor-container
+    ports:
+      - "8080-8081:8080"
