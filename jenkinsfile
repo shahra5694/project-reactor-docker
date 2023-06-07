@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+        tools {
+            maven 'maven 3.9.2'
+        }
+        stages {
+            stage('Build Maven') {
+                steps {
+                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/shahra5694/project-reactor-docker']])
+                    sh 'mvn clean install'
+                }
+            }
+            stage('Build Docker Image') {
+                steps {
+                    script {
+                        sh 'docker build -t 56rahulshah/project-reactor-docker .'
+                    }
+                }
+            }
+            stage('Push Image to Docker Hub') {
+                steps {
+                    script {
+                          withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                          sh 'docker login -u 56rahulshah -p ${dockerhubpwd}'
+                        }
+                        sh 'docker push 56rahulshah/project-reactor-docker'
+                    }
+                }
+            }
+        }
+}
