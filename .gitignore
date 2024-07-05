@@ -38,3 +38,4 @@ logPath_IS_UNDEFINED
 *-local.properties
 
 springboot.pm
+/db-data/
